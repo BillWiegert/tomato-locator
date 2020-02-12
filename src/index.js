@@ -2,7 +2,7 @@ import Board from "./board.js";
 
 document.addEventListener("DOMContentLoaded", function(event) {
   const field = document.querySelector("#field");
-  const board = new Board();
+  const board = new Board(10);
 
   //testing code
   window.board = board;
@@ -16,26 +16,36 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   renderBoard();
 
-  //handle clicks on any cell
-  field.addEventListener("click", function(event) {
+  //Handle left and right clicks on cells
+  function handleEvent(event) {
+    let target = event.target;
+
     //Do nothing if target is not a cell
-    if (!event.target.classList.contains("cell")) return;
+    if (!target.classList.contains("cell")) return;
 
-    let coords = event.target.id.split(',');
-    board.reveal(Number(coords[0]), Number(coords[1]));
-    renderBoard();
-  });
+    if (event.type == "contextmenu") event.preventDefault();
 
-  field.addEventListener("contextmenu", function(event) {
-    //Do nothing if target is not a cell
-    if (!event.target.classList.contains("cell")) return;
+    //Ensure cell is hidden
+    if (target.classList.contains("hidden")) {
 
-    //prevent contextmenu from displaying
-    event.preventDefault();
+      //Get cell coordinates
+      let coords = target.id.split(',');
+      let x = Number(coords[0]);
+      let y = Number(coords[1]);
 
-    //flag the target cell
-    let coords = event.target.id.split(',');
-    board.flagCell(Number(coords[0]), Number(coords[1]));
-    renderBoard();
-  })
+      //Unflag a flagged cell on left or right click
+      if (target.classList.contains("flag")) {
+        board.unflagCell(x, y)
+      } else {
+        //Reveal cell on click or flag cell on right click
+        event.type == "click" ? board.reveal(x, y) : board.flagCell(x, y);
+      }
+
+      renderBoard();
+    }
+  }
+
+  //Register events
+  field.addEventListener("click", handleEvent);
+  field.addEventListener("contextmenu", handleEvent);
 });

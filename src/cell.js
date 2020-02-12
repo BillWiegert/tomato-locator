@@ -16,10 +16,6 @@ class Cell {
     this.hidden = false;
   }
 
-  flagCell() {
-    this.flag = true;
-  }
-
   displayVal() {
     return (this.type == "empty" && !this.hidden && this.tomatoCount > 0) ? this.tomatoCount : "";
   }

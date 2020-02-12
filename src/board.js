@@ -73,7 +73,11 @@ class Board {
   }
 
   flagCell(x, y) {
-    this.getCell(x, y).flagCell();
+    this.getCell(x, y).flag = true;
+  }
+
+  unflagCell(x, y) {
+    this.getCell(x, y).flag = false;
   }
 
   getHTML() {

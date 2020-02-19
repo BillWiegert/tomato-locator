@@ -14,6 +14,7 @@ class Cell {
   reveal(tomatoCount) {
     this.tomatoCount = tomatoCount
     this.hidden = false;
+    this.flag = false;
   }
 
   displayVal() {

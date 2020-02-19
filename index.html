@@ -13,11 +13,41 @@
   </head>
   <body>
     <main>
+      <div id="modal" class="modal">
+        <div id="modal-content" class="modal-content">
+          <div class="modal-header">
+            <span class="close-modal x-btn">&times;</span>
+          </div>
+
+          <div id="game-end-modal" class="modal-inner">
+            <span id="modal-message">Congratulations, You Win!</span>
+            <button class="close-modal">Close</button>
+          </div>
+
+          <div id="new-game-form" class="modal-inner">
+            <label for="board-size">Board Size:</label>
+            <input type="number" name="board-size" value="10">
+            <br>
+            <label for="tomato-count">Tomato Count:</label>
+            <input type="number" name="tomato-count" value="10">
+            <button id="new-game-btn" class="close-modal">New Game</button>
+          </div>
+
+          <div class="modal-footer"></div>
+        </div>
+
+      </div>
       <h1>Welcome to Tomato Locator!</h1>
+      <h3 id="board-topper">Clear the board without squashing any tomatoes</h3>
       <div id="field"></div>
       <h3><span id="tomato-count">10</span> tomatoes and <span id="blank-count">90</span> blank spaces remaining</h3>
+      <div class="game-controls">
+        <button id="new-game-modal-btn">Game Settings</button>
+        <button id="reset-btn">Reset</button>
+      </div>
     </main>
     <footer>
+      <p>Last updated: 02/13/2020</p>
       <p>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
     </footer>
   </body>

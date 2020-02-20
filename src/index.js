@@ -1,18 +1,18 @@
 import Board from "./board.js";
 
+//Ensure DOM content has loaded before executing any code
 document.addEventListener("DOMContentLoaded", function(event) {
-  const board = new Board(10, 10);
+  const BOARD = new Board(10, 10);
 
   //DOM elements
   const field = document.querySelector("#field");
   const boardTopper = document.querySelector("#board-topper");
   const tomatoCount = document.querySelector("#tomato-count");
   const blankCount = document.querySelector("#blank-count");
-  const newGameSize = document.querySelector("[name=board-size]")
-  const newGameTomatoes = document.querySelector("[name=tomato-count]")
-  const newGameBtn = document.querySelector("#new-game-btn");
+  const newGameSize = document.querySelector("[name=board-size]");
+  const newGameTomatoes = document.querySelector("[name=tomato-count]");
   const newGameModalBtn = document.querySelector("#new-game-modal-btn");
-  const resetBtn = document.querySelector("#reset-btn");
+  const newGameBtns = document.querySelectorAll(".new-game-btn");
 
   // ==================== Modal Start ====================
   const modal = document.querySelector('#modal');
@@ -55,22 +55,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //==================== Modal End ====================
 
   //testing code
-  window.board = board;
+  window.BOARD = BOARD;
   window.update = update;
   window.newGame = newGame;
-
   //end test code
 
-  update();
-
   function newGame(size, tomatoCount) {
-    board.initialize(size, tomatoCount);
+    BOARD.initialize(size, tomatoCount);
     boardTopper.innerHTML = "Clear the board without squashing any tomatoes";
     update();
   }
 
   function handleNewGameClick() {
     newGame(newGameSize.value, newGameTomatoes.value);
+    modal.classList.remove("modal-win");
   }
 
   newGameModalBtn.onclick = function() {
@@ -78,23 +76,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function renderBoard() {
-    field.innerHTML = board.getHTML();
+    field.innerHTML = BOARD.getHTML();
   }
 
   function gameOver(won) {
     boardTopper.innerHTML = won ? "You Win!" : "You Lose!";
     modalMessage.innerHTML = won ? "Congratulations, You Win!" : "You Squashed a Tomato!";
+    won ? modal.classList.add("modal-win") : modal.classList.remove("modal-win");
     modalSubcontent.show("gameEnd");
   }
 
   function update() {
-    tomatoCount.innerHTML = board.tomatoCount;
-    blankCount.innerHTML = board.cellsLeft;
+    tomatoCount.innerHTML = BOARD.tomatoCount;
+    blankCount.innerHTML = BOARD.cellsLeft;
 
     renderBoard();
 
-    if (board.state != "play") {
-      gameOver(board.won());
+    if (BOARD.state != "play") {
+      gameOver(BOARD.won());
     }
   }
 
@@ -107,22 +106,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     if (event.type == "contextmenu") event.preventDefault();
 
-    //Ensure cell is hidden
+    //Get cell coordinates as integers
+    let coords = target.id.split(',');
+    let x = Number(coords[0]);
+    let y = Number(coords[1]);
+
     if (target.classList.contains("hidden")) {
-
-      //Get cell coordinates
-      let coords = target.id.split(',');
-      let x = Number(coords[0]);
-      let y = Number(coords[1]);
-
       //Unflag a flagged cell on left or right click
       if (target.classList.contains("flag")) {
-        board.unflagCell(x, y)
+        BOARD.unflagCell(x, y)
       } else {
         //Reveal cell on click or flag cell on right click
-        event.type == "click" ? board.reveal(x, y) : board.flagCell(x, y);
+        event.type == "click" ? BOARD.reveal(x, y) : BOARD.flagCell(x, y);
       }
 
+      update();
+    } else if (event.type == "dblclick") {
+      BOARD.revealUnflaggedNeighbors(x, y);
       update();
     }
   }
@@ -130,6 +130,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //Register events
   field.addEventListener("click", handleCellEvent);
   field.addEventListener("contextmenu", handleCellEvent);
-  newGameBtn.addEventListener("click", handleNewGameClick);
-  resetBtn.addEventListener("click", handleNewGameClick);
+  field.addEventListener("dblclick", handleCellEvent);
+  newGameBtns.forEach((btn) => {
+    btn.addEventListener("click", handleNewGameClick);
+  });
+
+  //Initial update
+  update();
 });

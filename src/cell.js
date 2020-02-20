@@ -11,6 +11,10 @@ class Cell {
     return this.type == "tomato";
   }
 
+  isFlagged() {
+    return this.flag;
+  }
+
   reveal(tomatoCount) {
     this.tomatoCount = tomatoCount
     this.hidden = false;

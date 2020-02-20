@@ -48,22 +48,37 @@ class Board {
     return this.grid[x][y];
   }
 
+  // returns an array of the coordinates of a cells neighbors
+  getNeighborCoords(x, y) {
+    //return nothing if specified coordinates are not within the grid
+    if (!this.inbounds(x, y)) return;
+    let coordList = [];
+
+    //iterate from -1 to 1 in x and y directions
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        //skip iteration for the originally specified coordinates
+        if (i == 0 && j == 0) continue;
+        //skip iteration for positions that are not within the grid
+        if (!this.inbounds(x + i, y + j)) continue;
+        coordList.push([x + i, y + j]);
+      }
+    }
+
+    return coordList;
+  }
+
   //returns an array of cells that are neighbors of the cell at the given coordinate
   getNeighbors(x, y) {
     //return nothing if specified coordinates are not within the grid
     if (!this.inbounds(x, y)) return;
     let neighbors = [];
+    let coordList = this.getNeighborCoords(x, y);
 
-    //iterate from -1 to 1 in both x and y to get all neighbors
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        //skip iteration for the originally specified cell
-        if (i == 0 && j == 0) continue;
-        //skip iteration for positions that are not within the grid
-        if (!this.inbounds(x + i, y + j)) continue;
-        neighbors.push(this.grid[x + i][y + j]);
-      }
-    }
+    coordList.forEach((coord) => {
+      neighbors.push(this.getCell(coord[0], coord[1]));
+    });
+
     return neighbors;
   }
 
@@ -100,6 +115,21 @@ class Board {
         this.reveal(c.coords[0], c.coords[1]);
       });
     }
+  }
+
+  // Reveal all neighbors of a revealed cell that are not flagged
+  revealUnflaggedNeighbors(x, y) {
+    let neighbors = this.getNeighborCoords(x, y);
+
+    neighbors.forEach((coord) => {
+      let x = coord[0];
+      let y = coord[1];
+
+      // Don't reveal flagged cells
+      if (!this.getCell(x, y).isFlagged()) {
+        this.reveal(x, y);
+      }
+    });
   }
 
   //Reveal every cell

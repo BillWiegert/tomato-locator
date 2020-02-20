@@ -21,7 +21,10 @@
 
           <div id="game-end-modal" class="modal-inner">
             <span id="modal-message">Congratulations, You Win!</span>
-            <button class="close-modal">Close</button>
+            <div class="modal-btns">
+              <button class="new-game-btn close-modal">New Game</button>
+              <button class="close-modal">Close</button>
+            </div>
           </div>
 
           <div id="new-game-form" class="modal-inner">
@@ -30,7 +33,9 @@
             <br>
             <label for="tomato-count">Tomato Count:</label>
             <input type="number" name="tomato-count" value="10">
-            <button id="new-game-btn" class="close-modal">New Game</button>
+            <div class="modal-btns">
+              <button class="new-game-btn close-modal">New Game</button>
+            </div>
           </div>
 
           <div class="modal-footer"></div>
@@ -43,12 +48,13 @@
       <h3><span id="tomato-count">10</span> tomatoes and <span id="blank-count">90</span> blank spaces remaining</h3>
       <div class="game-controls">
         <button id="new-game-modal-btn">Game Settings</button>
-        <button id="reset-btn">Reset</button>
+        <button class="new-game-btn">Reset</button>
       </div>
     </main>
     <footer>
       <p>Last updated: 02/13/2020</p>
-      <p>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+      <p>Firecracker png from <a href='https://pngtree.com/so/firecracker'>pngtree.com</a>.
+      Icons from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
     </footer>
   </body>
 </html>

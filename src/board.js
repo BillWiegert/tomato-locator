@@ -82,6 +82,7 @@ class Board {
     return neighbors;
   }
 
+  // Returns the quantity of the specified cell's neighbors that are tomatoes
   getTomatoCount(x, y) {
     let count = 0;
     let neighbors = this.getNeighbors(x, y);
@@ -93,23 +94,30 @@ class Board {
     return count;
   }
 
+  // Reveals the specified cell and recursively reveals it's neighbors if none are tomatoes
   reveal(x, y) {
     let cell = this.getCell(x, y);
 
+    // Do nothing if the cell is already revealed, base case for recursion
     if (!cell.hidden) return;
 
+    // End the game in a loss if a tomato is revealed during play
     if (cell.isTomato() && this.state == "play") {
       this.lose();
       return;
     }
 
+    // Get tomato count and assign it to the cell as it is revealed
     let count = this.getTomatoCount(x, y);
     cell.reveal(count);
+
+    // Check if the game has been won
     if (this.state == "play") {
       this.cellsLeft--;
       if (this.cellsLeft == 0) this.win();
     }
 
+    // Recursively reveal all neighbors if none are tomatoes
     if (count == 0) {
       this.getNeighbors(x, y).forEach((c) => {
         this.reveal(c.coords[0], c.coords[1]);
@@ -156,22 +164,27 @@ class Board {
     });
   }
 
+  // Returns true if game has been lost, false otherwise
   lost() {
     return this.state == "lost";
   }
 
+  // Returns true if game has been won, false otherwise
   won() {
     return this.state == "won";
   }
 
+  // Flags the specified cell
   flagCell(x, y) {
     this.getCell(x, y).flag = true;
   }
 
+  // Unflags the specified cell
   unflagCell(x, y) {
     this.getCell(x, y).flag = false;
   }
 
+  // Returns the HTML representation of the board
   getHTML() {
     let result = "";
 

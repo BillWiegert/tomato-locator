@@ -46,39 +46,44 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   }
 
-  //Close modal when clicking anywhere on the screen outside of the modal
-  window.onclick = function(event) {
+  //Close modal when clicking anywhere on the screen outside of the modal content
+  modal.onclick = function(event) {
+    // modal is the background of the modal content
     if (event.target == modal) {
       modalSubcontent.hide();
     }
   }
   //==================== Modal End ====================
 
-  //testing code
-  window.BOARD = BOARD;
-  window.update = update;
-  window.newGame = newGame;
-  //end test code
+  // ===== testing code =====
+  // window.BOARD = BOARD;
+  // window.update = update;
+  // window.newGame = newGame;
 
+  // Starts a new game with the specified settings
   function newGame(size, tomatoCount) {
     BOARD.initialize(size, tomatoCount);
     boardTopper.innerHTML = "Clear the board without squashing any tomatoes";
+    modal.classList.remove("modal-win");
     update();
   }
 
+  // Handles the clicking of a new game button
   function handleNewGameClick() {
     newGame(newGameSize.value, newGameTomatoes.value);
-    modal.classList.remove("modal-win");
   }
 
+  // Shows new game modal
   newGameModalBtn.onclick = function() {
     modalSubcontent.show("newGameForm");
   }
 
+  // Renders the board state on the page
   function renderBoard() {
     field.innerHTML = BOARD.getHTML();
   }
 
+  // Handles end of game actions
   function gameOver(won) {
     boardTopper.innerHTML = won ? "You Win!" : "You Lose!";
     modalMessage.innerHTML = won ? "Congratulations, You Win!" : "You Squashed a Tomato!";
@@ -86,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     modalSubcontent.show("gameEnd");
   }
 
+  // Handles required updates after board state changes
   function update() {
     tomatoCount.innerHTML = BOARD.tomatoCount;
     blankCount.innerHTML = BOARD.cellsLeft;
@@ -97,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   }
 
-  //Handle left and right clicks on cells
+  //Handle clicks on cells
   function handleCellEvent(event) {
     let target = event.target;
 
@@ -122,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       update();
     } else if (event.type == "dblclick") {
+      // Reveal neighbors on double click of an already revealed cell
       BOARD.revealUnflaggedNeighbors(x, y);
       update();
     }

@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   // Starts a new game with the specified settings
   function newGame(size, tomatoCount) {
-    BOARD.initialize(size, tomatoCount);
+    BOARD.newGame(size, tomatoCount);
     boardTopper.innerHTML = "Clear the board without squashing any tomatoes";
     modal.classList.remove("modal-win");
     update();

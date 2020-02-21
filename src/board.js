@@ -2,11 +2,11 @@ import Cell from "./cell.js";
 
 class Board {
   constructor(size = 10, tomatoCount = 10) {
-    this.initialize(size, tomatoCount);
+    this.newGame(size, tomatoCount);
   }
 
   //Fill grid with cells
-  initialize(size, tomatoCount) {
+  newGame(size, tomatoCount) {
     this.tomatoes = [] //Array containing all tomato cells
     this.size = size;
     let numCells = size * size;

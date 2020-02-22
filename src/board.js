@@ -8,6 +8,7 @@ class Board {
   //Fill grid with cells
   newGame(size, tomatoCount) {
     this.tomatoes = [] //Array containing all tomato cells
+    this.numFlagged = 0; //Count of flagged cells
     this.size = size;
     let numCells = size * size;
     //Ensure that the number of tomatoes is at most one less than the number of cells
@@ -109,7 +110,8 @@ class Board {
 
     // Get tomato count and assign it to the cell as it is revealed
     let count = this.getTomatoCount(x, y);
-    cell.reveal(count);
+    if (cell.isFlagged()) this.numFlagged--;
+    cell.reveal(count); // Call the cell's reveal method
 
     // Check if the game has been won
     if (this.state == "play") {
@@ -174,14 +176,16 @@ class Board {
     return this.state == "won";
   }
 
-  // Flags the specified cell
+  // Flags the specified cell. Must only be called on unflagged hidden cells
   flagCell(x, y) {
     this.getCell(x, y).flag = true;
+    this.numFlagged++;
   }
 
-  // Unflags the specified cell
+  // Unflags the specified cell. Must only be called on flagged cells
   unflagCell(x, y) {
     this.getCell(x, y).flag = false;
+    this.numFlagged--;
   }
 
   // Returns the HTML representation of the board

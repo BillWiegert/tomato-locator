@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   // Handles required updates after board state changes
   function update() {
-    tomatoCount.innerHTML = BOARD.tomatoCount;
+    tomatoCount.innerHTML = BOARD.tomatoCount - BOARD.numFlagged;
     blankCount.innerHTML = BOARD.cellsLeft;
 
     renderBoard();

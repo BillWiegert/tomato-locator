@@ -1,3 +1,13 @@
+/*
+Bill Wiegert
+CMPT304
+Assignment #2
+02-21-2020
+
+Tested in Chrome, Safari, and Firefox
+Bundled into dist/main.js with webpack
+*/
+
 import Cell from "./cell.js";
 
 class Board {

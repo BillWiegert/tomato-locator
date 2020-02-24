@@ -51,6 +51,10 @@ footer > p {
   margin: 5px;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 .row {
   display: flex;
   justify-content: center;
@@ -65,6 +69,10 @@ footer > p {
   line-height: 40px;
   margin: 1px;
   border: 1px solid black;
+}
+
+.cell:hover {
+  cursor: pointer;
 }
 
 .tomato {
